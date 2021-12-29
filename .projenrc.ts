@@ -42,7 +42,7 @@ const project = new awscdk.AwsCdkTypeScriptApp({
     convention) recommends chore:, docs:, style:, refactor:, perf:,
     test:, and others.
   */
-  // majorVersion: 1,
+  majorVersion: 1,
   release: true,
 });
 
