@@ -1,5 +1,5 @@
 import { App } from 'aws-cdk-lib';
-import { Template } from 'aws-cdk-lib/assertions';
+import { Template, Match } from 'aws-cdk-lib/assertions';
 import { PjAutoCodeAppStack } from '../src/main';
 
 test('Snapshot', () => {
@@ -26,5 +26,41 @@ describe(('Validate my stack'), () => {
 
   test(('Count tables'), () => {
     template.resourceCountIs('AWS::DynamoDB::Table', 1);
+  });
+
+  test(('Check keys'), () => {
+    template.hasResourceProperties('AWS::DynamoDB::Table', {
+      KeySchema: [
+        Match.objectLike({
+          AttributeName: 'username',
+          KeyType: 'HASH',
+        }),
+        Match.objectLike({
+          AttributeName: 'code',
+          KeyType: 'RANGE',
+        }),
+      ],
+    });
+  });
+
+  test(('Check attributes'), () => {
+    template.hasResourceProperties('AWS::DynamoDB::Table', {
+      AttributeDefinitions: [
+        Match.objectLike({
+          AttributeName: 'username',
+          AttributeType: 'S',
+        }),
+        Match.objectLike({
+          AttributeName: 'code',
+          AttributeType: 'N',
+        }),
+      ],
+    });
+  });
+
+  test(('Check attributes'), () => {
+    template.hasResource('AWS::DynamoDB::Table', {
+      UpdateReplacePolicy: Match.exact('Delete'),
+    });
   });
 });
