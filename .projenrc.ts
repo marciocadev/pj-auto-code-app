@@ -5,6 +5,8 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   name: 'pj-auto-code-app',
   projenrcTs: true,
 
+  authorName: 'Marcio Cruz de Almeida',
+  authorEmail: 'marciocadev@gmail.com',
   repository: 'https://github.com/marciocadev/pj-auto-code-app',
   // don't update snapshot when run jest
   antitamper: false,
