@@ -5,7 +5,7 @@
 ![Release](https://github.com/marciocadev/pj-auto-code-app/workflows/release/badge.svg)
 ![Commit activity](https://img.shields.io/github/commit-activity/w/marciocadev/pj-auto-code-app)
 
-Learn how I can use Projen to optimize code generation
+Learn how can I use Projen to optimize code generation
 
 ## Project startup
 * `mkdir pj-auto-code-app && cd pj-auto-code-app`
