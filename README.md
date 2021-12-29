@@ -1,5 +1,10 @@
 # pj-auto-code-app
 
+[![License](https://img.shields.io/badge/License-Apache%202.0-yellowgreen.svg)](https://opensource.org/licenses/Apache-2.0)
+![Build](https://github.com/marciocadev/pj-auto-code-app/workflows/build/badge.svg)
+![Release](https://github.com/marciocadev/pj-auto-code-app/workflows/release/badge.svg)
+![Commit activity](https://img.shields.io/github/commit-activity/w/marciocadev/pj-auto-code-app)
+
 Learn how I can use Projen to optimize code generation
 
 ## Project startup
