@@ -1,4 +1,4 @@
-import { awscdk } from 'projen';
+import { awscdk, FileBase, SourceCode } from 'projen';
 const project = new awscdk.AwsCdkTypeScriptApp({
   cdkVersion: '2.3.0',
   defaultReleaseBranch: 'main',
@@ -41,11 +41,53 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   */
   // majorVersion: 1,
   release: true,
-
-  // deps: [],                /* Runtime dependencies of this module. */
-  // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
-  // devDeps: [],             /* Build dependencies for this module. */
-  // packageName: undefined,  /* The 'name' in package.json. */
-  // release: undefined,      /* Add release management to this project. */
 });
+
+interface EntityType {
+  key: string; type: string;
+}
+
+interface EntityProps {
+  readonly sortKey?: EntityType;
+  readonly fields?: Array<EntityType>;
+}
+
+function createSchema(name: string, partitionKey: EntityType, props: EntityProps) {
+  const basename = name.toLowerCase();
+  const model = ts(`src/${basename}/model.ts`);
+  model.open(`export interface ${name} {`);
+  model.line(`readonly ${partitionKey.key}: string; // key`);
+  if (props.sortKey) {
+    model.line(`readonly ${props.sortKey.key}: ${props.sortKey.type}; // sort key`);
+  }
+  if (props.fields) {
+    for (const field of props.fields) {
+      model.line(`readonly ${field.key}?: ${field.type};`);
+    }
+  };
+  model.close('};');
+}
+
+function ts(path: string) : SourceCode {
+  const src = new SourceCode(project, path);
+  src.line(`// ${FileBase.PROJEN_MARKER}`);
+  return src;
+}
+
+function entity(name: string, partitionKey: EntityType, props: EntityProps) {
+  // Create Schema
+  createSchema(name, partitionKey, props);
+}
+
+entity('User', { key: 'username', type: 'string' }, {
+  sortKey: { key: 'code', type: 'number' },
+  fields: [
+    { key: 'name', type: 'string' },
+    { key: 'age', type: 'number' },
+    { key: 'lastname', type: 'string' },
+    { key: 'phone', type: 'string' },
+    { key: 'address', type: 'string' },
+  ],
+});
+
 project.synth();

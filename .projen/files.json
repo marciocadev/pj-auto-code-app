@@ -16,6 +16,7 @@
     ".projen/tasks.json",
     "cdk.json",
     "LICENSE",
+    "src/user/model.ts",
     "tsconfig.dev.json",
     "tsconfig.json"
   ],
