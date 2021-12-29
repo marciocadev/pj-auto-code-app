@@ -9,6 +9,39 @@ Object {
       "Type": "AWS::SSM::Parameter::Value<String>",
     },
   },
+  "Resources": Object {
+    "UserTableBD4BF69E": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "AttributeDefinitions": Array [
+          Object {
+            "AttributeName": "username",
+            "AttributeType": "S",
+          },
+          Object {
+            "AttributeName": "code",
+            "AttributeType": "N",
+          },
+        ],
+        "KeySchema": Array [
+          Object {
+            "AttributeName": "username",
+            "KeyType": "HASH",
+          },
+          Object {
+            "AttributeName": "code",
+            "KeyType": "RANGE",
+          },
+        ],
+        "ProvisionedThroughput": Object {
+          "ReadCapacityUnits": 5,
+          "WriteCapacityUnits": 5,
+        },
+      },
+      "Type": "AWS::DynamoDB::Table",
+      "UpdateReplacePolicy": "Delete",
+    },
+  },
   "Rules": Object {
     "CheckBootstrapVersion": Object {
       "Assertions": Array [

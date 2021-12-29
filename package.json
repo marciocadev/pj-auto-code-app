@@ -1,5 +1,9 @@
 {
   "name": "pj-auto-code-app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/marciocadev/pj-auto-code-app"
+  },
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",
@@ -26,6 +30,11 @@
     "upgrade-projen": "npx projen upgrade-projen",
     "watch": "npx projen watch",
     "projen": "npx projen"
+  },
+  "author": {
+    "name": "Marcio Cruz de Almeida",
+    "email": "marciocadev@gmail.com",
+    "organization": false
   },
   "devDependencies": {
     "@types/jest": "*",
