@@ -55,4 +55,5 @@ junit.xml
 .parcel-cache/
 !/src/user/model.ts
 !/src/constructs/user-table.ts
+!/src/user/client.ts
 !/.github/workflows/upgrade-main.yml
