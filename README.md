@@ -13,3 +13,5 @@ Learn how I can use Projen to optimize code generation
 * `yarn test`
 * `yarn build`
 * `yarn release`
+
+![teste](https://raw.githubusercontent.com/marciocadev/basic-crud-old/main/images/projenrc-edit-001.gif)
