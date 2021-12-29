@@ -188,8 +188,7 @@ function createClient(name: string, partitionKey: EntityType, props: EntityProps
   if (props.sortKey) {
     client.open(`public async getItem(partitionKey: ${partitionKey.type}, sortKey: ${props.sortKey.type}) {`);
   } else {
-    client.open(`public async getItem(partitionKey: 
-      ${partitionKey.type}) {`);
+    client.open(`public async getItem(partitionKey: ${partitionKey.type}) {`);
   }
   client.line('let keyObj: { [key: string]: any } = {};');
   client.line(`keyObj.${partitionKey.key} = partitionKey;`);
@@ -289,6 +288,16 @@ entity('User', { key: 'username', type: 'string' }, {
     { key: 'address', type: 'string' },
   ],
 });
+
+// entity('Company', { key: 'code', type: 'string' }, {
+//   fields: [
+//     { key: 'name', type: 'string' },
+//     { key: 'age', type: 'number' },
+//     { key: 'marketcap', type: 'number' },
+//     { key: 'phone', type: 'string' },
+//     { key: 'address', type: 'string' },
+//   ],
+// });
 
 project.addDeps('@aws-sdk/client-dynamodb');
 project.addDeps('@aws-sdk/util-dynamodb');
