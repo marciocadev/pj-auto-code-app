@@ -1,6 +1,6 @@
-title: Minimal theme
-logo: /assets/img/lweb-dev-icon-19.jpg
-description: Minimal is a theme for GitHub Pages.
+title: pj-auto-code-app
+logo: /assets/img/web-dev-icon-19.jpg
+description: Learning how can I use Projen to optimize code generation.
 show_downloads: true
 google_analytics:
 theme: jekyll-theme-minimal
