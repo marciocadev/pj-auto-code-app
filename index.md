@@ -5,9 +5,12 @@
 ![Release](https://github.com/marciocadev/pj-auto-code-app/workflows/release/badge.svg)
 ![Commit activity](https://img.shields.io/github/commit-activity/w/marciocadev/pj-auto-code-app)
 
-![Projen](assets/img/projen.svg?thumbnail)
-![JSii](assets/img/jsii.svg?thumbnail)
-![CDK](assets/img/aws-cdk-icon-48-squid.svg)
+<img src="./assets/img/projen.svg" width="64" height="64"/>
+
+<img src="./assets/img/aws-cdk-icon-64-squid.svg" width="64" height="64"/>
+
+<img src="./assets/img/jsii.svg" width="64"  height="64"/>
+
 
 Learn how can I use Projen to optimize code generation
 
@@ -18,14 +21,10 @@ Learn how can I use Projen to optimize code generation
 * `yarn build`
 * `yarn release`
 
-![Projen example](https://raw.githubusercontent.com/marciocadev/basic-crud-old/main/images/projenrc-edit-001.gif)
+![Projen example](https://raw.githubusercontent.com/marciocadev/pj-auto-code-app/main/images/projenrc-edit-001.gif)
 
 
 ## Welcome to GitHub Pages
-
-![Projen](assets/img/projen.svg =48x48)
-![JSii](assets/img/jsii.svg =48x48)
-![CDK](assets/img/aws-cdk-icon-48-squid.svg)
 
 You can use the [editor on GitHub](https://github.com/marciocadev/pj-auto-code-app/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
 
