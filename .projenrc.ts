@@ -57,7 +57,7 @@ interface EntityProps {
 
 function createSchema(name: string, partitionKey: EntityType, props: EntityProps) {
   const basename = name.toLowerCase();
-  const model = ts(`src/${basename}/model.ts`);
+  const model = ts(`src/lambda-fns/${basename}/model.ts`);
   model.open(`export interface ${name} {`);
   model.line('/**');
   model.line(`* **_${partitionKey.key}_** field is the **partition key**`);
@@ -169,7 +169,7 @@ function createTableConstruct(name: string, partitionKey: EntityType, props: Ent
 function createClient(name: string, partitionKey: EntityType, props: EntityProps) {
   const basename = name.toLowerCase();
   const env = `${name.toUpperCase()}_TABLE_NAME`;
-  const client = ts(`src/${basename}/client.ts`);
+  const client = ts(`src/lambda-fns/${basename}/client.ts`);
   // imports dependencies and iniciate the class
   client.open('import {');
   client.line('DynamoDBClient,');

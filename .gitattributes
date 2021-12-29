@@ -20,8 +20,8 @@
 /LICENSE linguist-generated
 /package.json linguist-generated
 /src/constructs/user-table.ts linguist-generated
-/src/user/client.ts linguist-generated
-/src/user/model.ts linguist-generated
+/src/lambda-fns/user/client.ts linguist-generated
+/src/lambda-fns/user/model.ts linguist-generated
 /tsconfig.dev.json linguist-generated
 /tsconfig.json linguist-generated
 /yarn.lock linguist-generated
