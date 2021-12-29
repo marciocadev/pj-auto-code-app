@@ -17,8 +17,8 @@
     "cdk.json",
     "LICENSE",
     "src/constructs/user-table.ts",
-    "src/user/client.ts",
-    "src/user/model.ts",
+    "src/lambda-fns/user/client.ts",
+    "src/lambda-fns/user/model.ts",
     "tsconfig.dev.json",
     "tsconfig.json"
   ],

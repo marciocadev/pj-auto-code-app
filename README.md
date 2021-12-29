@@ -10,4 +10,8 @@ Learn how I can use Projen to optimize code generation
 ## Project startup
 * `mkdir pj-auto-code-app && cd pj-auto-code-app`
 * `projen new awscdk-app-ts --cdk-version 2.3.0 --projenrc-ts`
+* `yarn test`
 * `yarn build`
+* `yarn release`
+
+![teste](https://raw.githubusercontent.com/marciocadev/basic-crud-old/main/images/projenrc-edit-001.gif)
