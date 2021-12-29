@@ -5,6 +5,7 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   name: 'pj-auto-code-app',
   projenrcTs: true,
 
+  repository: 'https://github.com/marciocadev/pj-auto-code-app',
   // don't update snapshot when run jest
   antitamper: false,
   docgen: true,
@@ -68,6 +69,60 @@ function createSchema(name: string, partitionKey: EntityType, props: EntityProps
   model.close('};');
 }
 
+function createTableConstruct(name: string, partitionKey: EntityType, props: EntityProps) {
+  const basename = name.toLowerCase();
+  const env = `${name.toUpperCase()}_TABLE_NAME`;
+
+  const table = ts(`src/constructs/${basename}-table.ts`);
+  table.line('import { RemovalPolicy } from \'aws-cdk-lib\';');
+  table.line('import { Table, AttributeType } from \'aws-cdk-lib/aws-dynamodb\';');
+  table.line('import { Function } from \'aws-cdk-lib/aws-lambda\';');
+  table.line('import { Construct } from \'constructs\';');
+  table.line('');
+  table.open(`export class ${name}Table extends Table {`);
+  table.open('constructor(scope: Construct, id: string) {');
+  table.open('super(scope, id, {');
+  table.open('partitionKey: {');
+  table.line(`name: '${partitionKey.key}',`);
+  if (partitionKey.type === 'number') {
+    table.line('type: AttributeType.NUMBER,');
+  } else if (partitionKey.type === 'string') {
+    table.line('type: AttributeType.STRING,');
+  } else if (partitionKey.type === 'binary') {
+    table.line('type: AttributeType.BINARY,');
+  }
+  table.close('},');
+  if (props.sortKey) {
+    table.open('sortKey: {');
+    table.line(`name: '${props.sortKey.key}',`);
+    if (props.sortKey.type === 'number') {
+      table.line('type: AttributeType.NUMBER,');
+    } else if (props.sortKey.type === 'string') {
+      table.line('type: AttributeType.STRING,');
+    } else if (props.sortKey.type === 'binary') {
+      table.line('type: AttributeType.BINARY,');
+    }
+    table.close('},');
+  }
+  table.line('removalPolicy: RemovalPolicy.DESTROY,');
+  table.close('});');
+  table.close('}');
+  table.line('');
+  table.open('public bind(handler: Function, grantType: string) {');
+  table.line(`handler.addEnvironment('${env}', this.tableName);`);
+  table.open('if (grantType.toLowerCase() === \'write\') {');
+  table.line('this.grantWriteData(handler);');
+  table.close('}');
+  table.open('if (grantType.toLowerCase() === \'read\') {');
+  table.line('this.grantReadData(handler);');
+  table.close('}');
+  table.open('if (grantType.toLowerCase() === \'readwrite\') {');
+  table.line('this.grantReadWriteData(handler);');
+  table.close('}');
+  table.close('}');
+  table.close('};');
+}
+
 function ts(path: string) : SourceCode {
   const src = new SourceCode(project, path);
   src.line(`// ${FileBase.PROJEN_MARKER}`);
@@ -77,6 +132,8 @@ function ts(path: string) : SourceCode {
 function entity(name: string, partitionKey: EntityType, props: EntityProps) {
   // Create Schema
   createSchema(name, partitionKey, props);
+  // Create Table Construct
+  createTableConstruct(name, partitionKey, props);
 }
 
 entity('User', { key: 'username', type: 'string' }, {

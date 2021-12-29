@@ -1,11 +1,12 @@
 import { App, Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
+import { UserTable } from './constructs/user-table';
 
-export class MyStack extends Stack {
+export class PjAutoCodeAppStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps = {}) {
     super(scope, id, props);
 
-    // define resources here...
+    new UserTable(this, 'UserTable');
   }
 }
 
@@ -17,7 +18,7 @@ const devEnv = {
 
 const app = new App();
 
-new MyStack(app, 'my-stack-dev', { env: devEnv });
+new PjAutoCodeAppStack(app, 'my-stack-dev', { env: devEnv });
 // new MyStack(app, 'my-stack-prod', { env: prodEnv });
 
 app.synth();
