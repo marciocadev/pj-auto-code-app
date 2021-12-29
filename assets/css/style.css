@@ -1,0 +1,9 @@
+---
+---
+
+@import "jekyll-theme-minimal";
+
+img[src~="thumbnail"] {
+    width:48px;
+    height:48px;
+ }

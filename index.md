@@ -5,8 +5,8 @@
 ![Release](https://github.com/marciocadev/pj-auto-code-app/workflows/release/badge.svg)
 ![Commit activity](https://img.shields.io/github/commit-activity/w/marciocadev/pj-auto-code-app)
 
-![Projen](assets/img/projen.svg =48x48)
-![JSii](assets/img/jsii.svg =48x48)
+![Projen](assets/img/projen.svg?thumbnail)
+![JSii](assets/img/jsii.svg?thumbnail)
 ![CDK](assets/img/aws-cdk-icon-48-squid.svg)
 
 Learn how can I use Projen to optimize code generation
