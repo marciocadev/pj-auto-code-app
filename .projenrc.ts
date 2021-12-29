@@ -59,12 +59,26 @@ function createSchema(name: string, partitionKey: EntityType, props: EntityProps
   const basename = name.toLowerCase();
   const model = ts(`src/${basename}/model.ts`);
   model.open(`export interface ${name} {`);
+  model.line('/**');
+  model.line(`* **_${partitionKey.key}_** field is the **partition key**`);
+  model.line('*');
+  model.line('* @attribute');
+  model.line('*/');
   model.line(`readonly ${partitionKey.key}: string; // key`);
   if (props.sortKey) {
+    model.line('/**');
+    model.line(`* **_${props.sortKey.key}_** field is the **sort key**`);
+    model.line('*');
+    model.line('* @attribute');
+    model.line('*/');
     model.line(`readonly ${props.sortKey.key}: ${props.sortKey.type}; // sort key`);
   }
   if (props.fields) {
     for (const field of props.fields) {
+      model.line('/**');
+      model.line('*');
+      model.line('* @attribute');
+      model.line('*/');
       model.line(`readonly ${field.key}?: ${field.type};`);
     }
   };
@@ -81,7 +95,24 @@ function createTableConstruct(name: string, partitionKey: EntityType, props: Ent
   table.line('import { Function } from \'aws-cdk-lib/aws-lambda\';');
   table.line('import { Construct } from \'constructs\';');
   table.line('');
+  table.open('export enum GrantType {');
+  table.line('Read = 1,');
+  table.line('Write = 2,');
+  table.line('ReadWrite = 3,');
+  table.close('}');
+  table.line('');
+  table.line('/**');
+  table.line(`* A Cloudformation \'AWS::DynamoDB::Table\' for **${name}** data`);
+  table.line('*');
+  table.line('* @cloudformationResource AWS::DynamoDB::Table');
+  table.line('*/');
   table.open(`export class ${name}Table extends Table {`);
+  table.line('/**');
+  table.line(`* Create a new ${name}Table`);
+  table.line('*');
+  table.line('* @param scope - scope in which this resource is defined');
+  table.line('* @param id    - scoped id of the resource');
+  table.line('*/');
   table.open('constructor(scope: Construct, id: string) {');
   table.open('super(scope, id, {');
   table.open('partitionKey: {');
@@ -110,15 +141,25 @@ function createTableConstruct(name: string, partitionKey: EntityType, props: Ent
   table.close('});');
   table.close('}');
   table.line('');
-  table.open('public bind(handler: Function, grantType: string) {');
+  table.line('/**');
+  table.line('* Binding a table grant type to a handler');
+  table.line('*');
+  table.line('* @stability stable');
+  table.line('* @param handler');
+  table.line('* @param grantType');
+  table.line('*/');
+  table.open('public bind(handler: Function, grantType: GrantType) {');
   table.line(`handler.addEnvironment('${env}', this.tableName);`);
-  table.open('if (grantType.toLowerCase() === \'write\') {');
+  //table.open('if (grantType.toLowerCase() === \'write\') {');
+  table.open('if (grantType === GrantType.Write) {');
   table.line('this.grantWriteData(handler);');
   table.close('}');
-  table.open('if (grantType.toLowerCase() === \'read\') {');
+  //table.open('if (grantType.toLowerCase() === \'read\') {');
+  table.open('if (grantType === GrantType.Read) {');
   table.line('this.grantReadData(handler);');
   table.close('}');
-  table.open('if (grantType.toLowerCase() === \'readwrite\') {');
+  //table.open('if (grantType.toLowerCase() === \'readwrite\') {');
+  table.open('if (grantType === GrantType.ReadWrite) {');
   table.line('this.grantReadWriteData(handler);');
   table.close('}');
   table.close('}');
@@ -251,5 +292,7 @@ entity('User', { key: 'username', type: 'string' }, {
 
 project.addDeps('@aws-sdk/client-dynamodb');
 project.addDeps('@aws-sdk/util-dynamodb');
+
+project.addDeps('cdk-nag@^2.0.0');
 
 project.synth();
