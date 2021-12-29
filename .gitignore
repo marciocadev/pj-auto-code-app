@@ -54,4 +54,5 @@ junit.xml
 .cdk.staging/
 .parcel-cache/
 !/src/user/model.ts
+!/src/constructs/user-table.ts
 !/.github/workflows/upgrade-main.yml
