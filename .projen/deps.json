@@ -68,12 +68,22 @@
       "type": "build"
     },
     {
+      "name": "standard-version",
+      "version": "^9",
+      "type": "build"
+    },
+    {
       "name": "ts-jest",
       "type": "build"
     },
     {
       "name": "ts-node",
       "version": "^9",
+      "type": "build"
+    },
+    {
+      "name": "typedoc",
+      "version": "^0.21.4",
       "type": "build"
     },
     {
