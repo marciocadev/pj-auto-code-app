@@ -163,7 +163,7 @@ function createTableConstruct(name: string, partitionKey: EntityType, props: Ent
   table.line('this.grantReadWriteData(handler);');
   table.close('}');
   table.close('}');
-  table.close('};');
+  table.close('}');
 }
 
 function createClient(name: string, partitionKey: EntityType, props: EntityProps) {

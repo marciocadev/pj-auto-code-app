@@ -55,4 +55,4 @@ export class UserTable extends Table {
       this.grantReadWriteData(handler);
     }
   }
-};
+}

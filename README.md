@@ -14,4 +14,4 @@ Learning how can I use Projen to optimize code generation
 * `yarn build`
 * `yarn release`
 
-![Projen example](https://raw.githubusercontent.com/marciocadev/basic-crud-old/main/images/projenrc-edit-001.gif)
+![Projen example](https://raw.githubusercontent.com/marciocadev/pj-auto-code-app/main/images/projenrc-edit-001.gif)

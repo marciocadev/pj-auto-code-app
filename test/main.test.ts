@@ -58,9 +58,14 @@ describe(('Validate my stack'), () => {
     });
   });
 
-  test(('Check attributes'), () => {
+  test(('Check removal policy'), () => {
     template.hasResource('AWS::DynamoDB::Table', {
       UpdateReplacePolicy: Match.exact('Delete'),
     });
   });
+
+  test('Count Lambdas', () => {
+    template.resourceCountIs('AWS::Lambda::Function', 1);
+  });
+
 });
