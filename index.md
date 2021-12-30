@@ -6,9 +6,12 @@
 ![Commit activity](https://img.shields.io/github/commit-activity/w/marciocadev/pj-auto-code-app)
 
 <div>
-  <div><img src="./assets/img/projen.svg" width="64" height="64"/></div><div>Projen</div>
-  <div><img src="./assets/img/aws-cdk-icon-64-squid.svg" width="64" height="64"/></div><div>CDK</div>
-  <div><img src="./assets/img/jsii.svg" width="64"  height="64"/></div><div>JSii</div>
+  <div class="row">
+    <div class="column"><img src="./assets/img/projen.svg" width="64" height="64"/></div>
+    <div class="column">Projen</div>
+  </div>
+  <div class="row"><img src="./assets/img/aws-cdk-icon-64-squid.svg" width="64" height="64"/></div><div>CDK</div>
+  <div class="row"><img src="./assets/img/jsii.svg" width="64"  height="64"/></div><div>JSii</div>
 <div>
 
 Learn how can I use Projen to optimize code generation
