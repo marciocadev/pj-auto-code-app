@@ -1,7 +1,10 @@
+import { join } from 'path';
 import { App, Aspects, Stack, StackProps } from 'aws-cdk-lib';
-import { AwsSolutionsChecks } from 'cdk-nag';
+import { Runtime } from 'aws-cdk-lib/aws-lambda';
+import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
+import { AwsSolutionsChecks, NagSuppressions } from 'cdk-nag';
 import { Construct } from 'constructs';
-import { UserTable } from './constructs/user-table';
+import { UserTable, GrantType } from './constructs/user-table';
 
 /**
  * Basic stack
@@ -17,7 +20,17 @@ export class PjAutoCodeAppStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps = {}) {
     super(scope, id, props);
 
-    new UserTable(this, 'UserTable');
+    const users = new UserTable(this, 'UserTable');
+
+    const createHandler = new NodejsFunction(this, 'CreateUser', {
+      entry: join(__dirname + '/lambda-fns/create-user.ts'),
+      handler: 'handler',
+      runtime: Runtime.NODEJS_14_X,
+      bundling: {
+        minify: true,
+      },
+    });
+    users.bind(createHandler, GrantType.Write);
   }
 }
 
@@ -29,9 +42,12 @@ const devEnv = {
 
 const app = new App();
 
-new PjAutoCodeAppStack(app, 'my-stack-dev', { env: devEnv });
+const stack = new PjAutoCodeAppStack(app, 'my-stack-dev', { env: devEnv });
 // new MyStack(app, 'my-stack-prod', { env: prodEnv });
 
 Aspects.of(app).add(new AwsSolutionsChecks());
+NagSuppressions.addStackSuppressions(stack, [
+  { id: 'AwsSolutions-IAM4', reason: 'handler receive the correct table grant to action' },
+]);
 
 app.synth();
