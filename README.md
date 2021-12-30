@@ -5,7 +5,7 @@
 ![Release](https://github.com/marciocadev/pj-auto-code-app/workflows/release/badge.svg)
 ![Commit activity](https://img.shields.io/github/commit-activity/w/marciocadev/pj-auto-code-app)
 
-Learn how I can use Projen to optimize code generation
+Learning how can I use Projen to optimize code generation
 
 ## Project startup
 * `mkdir pj-auto-code-app && cd pj-auto-code-app`
@@ -14,4 +14,4 @@ Learn how I can use Projen to optimize code generation
 * `yarn build`
 * `yarn release`
 
-![teste](https://raw.githubusercontent.com/marciocadev/basic-crud-old/main/images/projenrc-edit-001.gif)
+![Projen example](https://raw.githubusercontent.com/marciocadev/basic-crud-old/main/images/projenrc-edit-001.gif)
