@@ -16,7 +16,7 @@ jest.mock('@aws-sdk/client-dynamodb', () => {
   };
 });
 
-describe('test update user', () => {
+describe('test update-user lambda', () => {
   const OLD_ENV = process.env;
 
   beforeEach(() => {
@@ -28,7 +28,7 @@ describe('test update user', () => {
     process.env = OLD_ENV; // Restore old environment
   });
 
-  test('test update user success', async() => {
+  test('test update-user lambda success', async() => {
     const user: User = {
       username: 'marciocadev',
       code: 1,
