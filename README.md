@@ -3,6 +3,7 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-yellowgreen.svg)](https://opensource.org/licenses/Apache-2.0)
 ![Build](https://github.com/marciocadev/pj-auto-code-app/workflows/build/badge.svg)
 ![Release](https://github.com/marciocadev/pj-auto-code-app/workflows/release/badge.svg)
+[![codecov](https://codecov.io/gh/marciocadev/mca-projen-jsii-example/branch/main/graph/badge.svg?token=U1R3MKJWJO)](https://codecov.io/gh/marciocadev/mca-projen-jsii-example)
 ![Commit activity](https://img.shields.io/github/commit-activity/w/marciocadev/pj-auto-code-app)
 
 Learning how can I use Projen to optimize code generation
