@@ -10,6 +10,7 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   repository: 'https://github.com/marciocadev/pj-auto-code-app',
   // don't update snapshot when run jest
   antitamper: false,
+  codeCov: true,
   docgen: true,
   eslint: true,
   tsconfig: {
