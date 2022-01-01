@@ -10,7 +10,7 @@ test('Snapshot', () => {
   expect(template.toJSON()).toMatchSnapshot();
 });
 
-describe(('Validate my stack'), () => {
+describe(('validate my stack'), () => {
   let app: App;
   let stack: PjAutoCodeAppStack;
   let template: Template;
@@ -24,11 +24,11 @@ describe(('Validate my stack'), () => {
     template = Template.fromStack(stack);
   });
 
-  test(('Count tables'), () => {
+  test(('count tables'), () => {
     template.resourceCountIs('AWS::DynamoDB::Table', 1);
   });
 
-  test(('Check keys'), () => {
+  test(('varify partition and sort keys'), () => {
     template.hasResourceProperties('AWS::DynamoDB::Table', {
       KeySchema: [
         Match.objectLike({
@@ -43,7 +43,7 @@ describe(('Validate my stack'), () => {
     });
   });
 
-  test(('Check attributes'), () => {
+  test(('verify table attributes'), () => {
     template.hasResourceProperties('AWS::DynamoDB::Table', {
       AttributeDefinitions: [
         Match.objectLike({
@@ -58,14 +58,14 @@ describe(('Validate my stack'), () => {
     });
   });
 
-  test(('Check removal policy'), () => {
+  test(('verify table removal policy'), () => {
     template.hasResource('AWS::DynamoDB::Table', {
       UpdateReplacePolicy: Match.exact('Delete'),
     });
   });
 
-  test('Count Lambdas', () => {
-    template.resourceCountIs('AWS::Lambda::Function', 3);
+  test('count lambdas', () => {
+    template.resourceCountIs('AWS::Lambda::Function', 4);
   });
 
 });

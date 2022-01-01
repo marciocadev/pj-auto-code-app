@@ -14,7 +14,7 @@ jest.mock('@aws-sdk/client-dynamodb', () => {
   };
 });
 
-describe('Delete user', () => {
+describe('test delete user', () => {
   const OLD_ENV = process.env;
 
   beforeEach(() => {
@@ -26,7 +26,7 @@ describe('Delete user', () => {
     process.env = OLD_ENV; // Restore old environment
   });
 
-  test('Delete User success', async() => {
+  test('test delete user success', async() => {
     const event: User = {
       username: 'marciocadev',
       code: 1,
