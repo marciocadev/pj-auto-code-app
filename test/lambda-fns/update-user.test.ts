@@ -1,5 +1,5 @@
-import { PutItemCommand } from '@aws-sdk/client-dynamodb';
-import { handler } from '../../src/lambda-fns/create-user';
+import { UpdateItemCommand } from '@aws-sdk/client-dynamodb';
+import { handler } from '../../src/lambda-fns/update-user';
 import { User } from '../../src/lambda-fns/user/model';
 
 jest.mock('@aws-sdk/client-dynamodb', () => {
@@ -12,11 +12,11 @@ jest.mock('@aws-sdk/client-dynamodb', () => {
   }
   return {
     DynamoDBClient: MockDynamoDBClient,
-    PutItemCommand: jest.fn().mockImplementation(() => { return {}; }),
+    UpdateItemCommand: jest.fn().mockImplementation(() => { return {}; }),
   };
 });
 
-describe('test create user', () => {
+describe('test update user', () => {
   const OLD_ENV = process.env;
 
   beforeEach(() => {
@@ -28,17 +28,25 @@ describe('test create user', () => {
     process.env = OLD_ENV; // Restore old environment
   });
 
-  test('test create user success', async() => {
-    const event: User = {
+  test('test update user success', async() => {
+    const user: User = {
       username: 'marciocadev',
       code: 1,
+      name: 'Marcio',
+      age: 48,
+      lastname: 'Almeida',
+      phone: '21-99999-9999',
+      address: 'Rua que eu moro',
     };
 
     process.env.USER_TABLE_NAME = 'user-table';
 
-    const result = await handler(event);
+    const result = await handler({
+      username: 'marciocadev',
+      user: user,
+    });
     expect(result).toMatchObject({});
 
-    expect(PutItemCommand).toBeCalledTimes(1);
+    expect(UpdateItemCommand).toBeCalledTimes(1);
   });
 });
