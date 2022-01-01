@@ -31,6 +31,16 @@ export class PjAutoCodeAppStack extends Stack {
       },
     });
     users.bind(createHandler, GrantType.Write);
+
+    const getHandler = new NodejsFunction(this, 'GetUser', {
+      entry: join(__dirname + '/lambda-fns/get-user.ts'),
+      handler: 'handler',
+      runtime: Runtime.NODEJS_14_X,
+      bundling: {
+        minify: true,
+      },
+    });
+    users.bind(getHandler, GrantType.Read);
   }
 }
 
