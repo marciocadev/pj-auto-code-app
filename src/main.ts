@@ -48,8 +48,7 @@ export class PjAutoCodeAppStack extends Stack {
       runtime: Runtime.NODEJS_14_X,
       bundling: {
         minify: true,
-      },>>>>>> main
-
+      },
     });
     users.bind(deleteHandler, GrantType.Write);
   }
