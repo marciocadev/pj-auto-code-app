@@ -78,8 +78,7 @@
     "coverageReporters": [
       "json",
       "lcov",
-      "clover",
-      "text"
+      "clover"
     ],
     "coverageDirectory": "coverage",
     "coveragePathIgnorePatterns": [
