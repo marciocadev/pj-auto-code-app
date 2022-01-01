@@ -8,8 +8,7 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   authorName: 'Marcio Cruz de Almeida',
   authorEmail: 'marciocadev@gmail.com',
   repository: 'https://github.com/marciocadev/pj-auto-code-app',
-  // don't update snapshot when run jest
-  antitamper: false,
+
   codeCov: true,
   gitpod: true,
   docgen: true,
@@ -155,15 +154,12 @@ function createTableConstruct(name: string, partitionKey: EntityType, props: Ent
   table.line('*/');
   table.open('public bind(handler: Function, grantType: GrantType) {');
   table.line(`handler.addEnvironment('${env}', this.tableName);`);
-  //table.open('if (grantType.toLowerCase() === \'write\') {');
   table.open('if (grantType === GrantType.Write) {');
   table.line('this.grantWriteData(handler);');
   table.close('}');
-  //table.open('if (grantType.toLowerCase() === \'read\') {');
   table.open('if (grantType === GrantType.Read) {');
   table.line('this.grantReadData(handler);');
   table.close('}');
-  //table.open('if (grantType.toLowerCase() === \'readwrite\') {');
   table.open('if (grantType === GrantType.ReadWrite) {');
   table.line('this.grantReadWriteData(handler);');
   table.close('}');
