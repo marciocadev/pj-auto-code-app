@@ -65,7 +65,7 @@ describe(('validate my stack'), () => {
   });
 
   test('count lambdas', () => {
-    template.resourceCountIs('AWS::Lambda::Function', 3);
+    template.resourceCountIs('AWS::Lambda::Function', 4);
   });
 
 });

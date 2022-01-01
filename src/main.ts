@@ -41,7 +41,7 @@ export class PjAutoCodeAppStack extends Stack {
       },
     });
     users.bind(updateHandler, GrantType.Write);
-    
+
     const getHandler = new NodejsFunction(this, 'GetUser', {
       entry: join(__dirname + '/lambda-fns/get-user.ts'),
       handler: 'handler',
