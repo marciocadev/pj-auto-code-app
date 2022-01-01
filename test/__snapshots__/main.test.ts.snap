@@ -108,6 +108,104 @@ Object {
       },
       "Type": "AWS::IAM::Policy",
     },
+    "DeleteUser55A9FE77": Object {
+      "DependsOn": Array [
+        "DeleteUserServiceRoleDefaultPolicyA88C2C85",
+        "DeleteUserServiceRoleF9B1C57A",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "0fa97cc4e336aa1241f07736d927d846f9d84a4883781f7c242437bba82dd112.zip",
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+            "USER_TABLE_NAME": Object {
+              "Ref": "UserTableBD4BF69E",
+            },
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "DeleteUserServiceRoleF9B1C57A",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "DeleteUserServiceRoleDefaultPolicyA88C2C85": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "UserTableBD4BF69E",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Ref": "AWS::NoValue",
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "DeleteUserServiceRoleDefaultPolicyA88C2C85",
+        "Roles": Array [
+          Object {
+            "Ref": "DeleteUserServiceRoleF9B1C57A",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "DeleteUserServiceRoleF9B1C57A": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
     "UserTableBD4BF69E": Object {
       "DeletionPolicy": "Delete",
       "Properties": Object {
