@@ -31,6 +31,15 @@ export class PjAutoCodeAppStack extends Stack {
       },
     });
     users.bind(createHandler, GrantType.Write);
+
+    const deleteUser = new NodejsFunction(this, 'DeleteUser', {
+      entry: join(__dirname + '/lambda-fns/delete-user.ts'),
+      handler: 'handler',
+      runtime: Runtime.NODEJS_14_X,
+      bundling: {
+        minify: true,
+      }
+    });
   }
 }
 
