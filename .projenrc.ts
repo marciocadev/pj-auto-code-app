@@ -11,12 +11,16 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   // don't update snapshot when run jest
   antitamper: false,
   codeCov: true,
+  gitpod: true,
   docgen: true,
   eslint: true,
   tsconfig: {
     compilerOptions: {
       lib: ['dom', 'es2019'],
     },
+  },
+  jestOptions: {
+    coverageText: false,
   },
   // Major version number
   /*
