@@ -7,32 +7,27 @@ import {
   DeleteItemCommand, DeleteItemCommandInput,
 } from '@aws-sdk/client-dynamodb';
 import { marshall } from '@aws-sdk/util-dynamodb';
-import { User } from './model';
+import { User, UserKey } from './model';
 
 export class UserClient {
   readonly client = new DynamoDBClient({ region: process.env.AWS_REGION });
 
-  public async getItem(partitionKey: string, sortKey: number) {
-    let keyObj: { [key: string]: any } = {};
-    keyObj.username = partitionKey;
-    keyObj.code = sortKey;
+  public async getItem(key: UserKey) {
     const input: GetItemCommandInput = {
       TableName: process.env.USER_TABLE_NAME,
-      Key: marshall(keyObj),
+      Key: marshall(key),
     };
     return this.client.send(new GetItemCommand(input));
   }
 
-  public async deleteItem(partitionKey: string, sortKey: number) {
-    let keyObj: { [key: string]: any } = {};
-    keyObj.username = partitionKey;
-    keyObj.code = sortKey;
+  public async deleteItem(key: UserKey) {
     const input: DeleteItemCommandInput = {
       TableName: process.env.USER_TABLE_NAME,
-      Key: marshall(keyObj),
+      Key: marshall(key),
     };
     return this.client.send(new DeleteItemCommand(input));
   }
+
   public async putItem(item: User) {
     const input: PutItemCommandInput = {
       TableName: process.env.USER_TABLE_NAME,
@@ -41,7 +36,7 @@ export class UserClient {
     return this.client.send(new PutItemCommand(input));
   }
 
-  public async updateItem(partitionKey: string, item: User) {
+  public async updateItem(item: User) {
     let expAttrVal: { [key: string]: any } = {};
     let upExp = 'set ';
     let expAttrNames: { [key: string]: string } = {};
@@ -49,31 +44,31 @@ export class UserClient {
       expAttrVal[':name'] = item.name;
       upExp = upExp + '#name = :name,';
       expAttrNames['#name'] = 'name';
-    };
+    }
     if (item.age !== null && item.age !== undefined) {
       expAttrVal[':age'] = item.age;
       upExp = upExp + '#age = :age,';
       expAttrNames['#age'] = 'age';
-    };
+    }
     if (item.lastname !== null && item.lastname !== undefined) {
       expAttrVal[':lastname'] = item.lastname;
       upExp = upExp + '#lastname = :lastname,';
       expAttrNames['#lastname'] = 'lastname';
-    };
+    }
     if (item.phone !== null && item.phone !== undefined) {
       expAttrVal[':phone'] = item.phone;
       upExp = upExp + '#phone = :phone,';
       expAttrNames['#phone'] = 'phone';
-    };
+    }
     if (item.address !== null && item.address !== undefined) {
       expAttrVal[':address'] = item.address;
       upExp = upExp + '#address = :address,';
       expAttrNames['#address'] = 'address';
-    };
+    }
     upExp = upExp.slice(0, -1);
     let keyObj: { [key: string]: any } = {};
-    keyObj.username = partitionKey;
-    keyObj.code = item.code;
+    keyObj.username = item.username;
+    keyObj.loginDate = item.loginDate;
     const input: UpdateItemCommandInput = {
       TableName: process.env.USER_TABLE_NAME,
       Key: marshall(keyObj),
@@ -81,8 +76,7 @@ export class UserClient {
       UpdateExpression: upExp,
       ExpressionAttributeNames: expAttrNames,
     };
-    console.log(input);
     return this.client.send(new UpdateItemCommand(input));
   }
 
-};
+}

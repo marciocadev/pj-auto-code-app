@@ -50,35 +50,46 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   release: true,
 });
 
+function ts(path: string) : SourceCode {
+  const src = new SourceCode(project, path);
+  src.line(`// ${FileBase.PROJEN_MARKER}`);
+  return src;
+}
+
 interface EntityType {
-  key: string; type: string;
+  key: string;
+  type: string;
+  partitionkey?: boolean;
+  sortKey?: boolean;
+  description?: string;
 }
 
-interface EntityProps {
-  readonly sortKey?: EntityType;
-  readonly fields?: Array<EntityType>;
-}
-
-function createSchema(name: string, partitionKey: EntityType, props: EntityProps) {
+function createSchema(name: string, fields: EntityType[]) {
   const basename = name.toLowerCase();
   const model = ts(`src/lambda-fns/${basename}/model.ts`);
-  model.open(`export interface ${name} {`);
-  model.line('/**');
-  model.line(`* **_${partitionKey.key}_** field is the **partition key**`);
-  model.line('*');
-  model.line('* @attribute');
-  model.line('*/');
-  model.line(`readonly ${partitionKey.key}: string; // key`);
-  if (props.sortKey) {
-    model.line('/**');
-    model.line(`* **_${props.sortKey.key}_** field is the **sort key**`);
-    model.line('*');
-    model.line('* @attribute');
-    model.line('*/');
-    model.line(`readonly ${props.sortKey.key}: ${props.sortKey.type}; // sort key`);
+  model.open(`export interface ${name}Key {`);
+  for (const field of fields) {
+    if (field.partitionkey) {
+      model.line('/**');
+      model.line(`* **_${field.key}_** field is the **partition key**`);
+      model.line('*');
+      model.line('* @attribute');
+      model.line('*/');
+      model.line(`readonly ${field.key}: ${field.type}; // partition key`);
+    } else if (field.sortKey) {
+      model.line('/**');
+      model.line(`* **_${field.key}_** field is the **sort key**`);
+      model.line('*');
+      model.line('* @attribute');
+      model.line('*/');
+      model.line(`readonly ${field.key}: ${field.type}; // sort key`);
+    }
   }
-  if (props.fields) {
-    for (const field of props.fields) {
+  model.close('}');
+  model.line('');
+  model.open(`export interface ${name} extends ${name}Key {`);
+  for (const field of fields) {
+    if (!field.partitionkey && !field.sortKey) {
       model.line('/**');
       model.line('*');
       model.line('* @attribute');
@@ -86,10 +97,11 @@ function createSchema(name: string, partitionKey: EntityType, props: EntityProps
       model.line(`readonly ${field.key}?: ${field.type};`);
     }
   };
-  model.close('};');
+  model.close('}');
+  model.line('');
 }
 
-function createTableConstruct(name: string, partitionKey: EntityType, props: EntityProps) {
+function createTableConstruct(name: string, fields: EntityType[]) {
   const basename = name.toLowerCase();
   const env = `${name.toUpperCase()}_TABLE_NAME`;
 
@@ -119,28 +131,33 @@ function createTableConstruct(name: string, partitionKey: EntityType, props: Ent
   table.line('*/');
   table.open('constructor(scope: Construct, id: string) {');
   table.open('super(scope, id, {');
-  table.open('partitionKey: {');
-  table.line(`name: '${partitionKey.key}',`);
-  if (partitionKey.type === 'number') {
-    table.line('type: AttributeType.NUMBER,');
-  } else if (partitionKey.type === 'string') {
-    table.line('type: AttributeType.STRING,');
-  } else if (partitionKey.type === 'binary') {
-    table.line('type: AttributeType.BINARY,');
-  }
-  table.close('},');
-  if (props.sortKey) {
-    table.open('sortKey: {');
-    table.line(`name: '${props.sortKey.key}',`);
-    if (props.sortKey.type === 'number') {
-      table.line('type: AttributeType.NUMBER,');
-    } else if (props.sortKey.type === 'string') {
-      table.line('type: AttributeType.STRING,');
-    } else if (props.sortKey.type === 'binary') {
-      table.line('type: AttributeType.BINARY,');
+  for (const field of fields) {
+    if (field.partitionkey) {
+      table.open('partitionKey: {');
+      table.line(`name: '${field.key}',`);
+      if (field.type === 'number') {
+        table.line('type: AttributeType.NUMBER,');
+      } else if (field.type === 'string') {
+        table.line('type: AttributeType.STRING,');
+      } else if (field.type === 'binary') {
+        table.line('type: AttributeType.BINARY,');
+      }
+      table.close('},');
     }
-    table.close('},');
+    if (field.sortKey) {
+      table.open('sortKey: {');
+      table.line(`name: '${field.key}',`);
+      if (field.type === 'number') {
+        table.line('type: AttributeType.NUMBER,');
+      } else if (field.type === 'string') {
+        table.line('type: AttributeType.STRING,');
+      } else if (field.type === 'binary') {
+        table.line('type: AttributeType.BINARY,');
+      }
+      table.close('},');
+    }
   }
+
   table.line('removalPolicy: RemovalPolicy.DESTROY,');
   table.close('});');
   table.close('}');
@@ -167,59 +184,52 @@ function createTableConstruct(name: string, partitionKey: EntityType, props: Ent
   table.close('}');
 }
 
-function createClient(name: string, partitionKey: EntityType, props: EntityProps) {
+function createClient(name: string, fields: EntityType[]) {
   const basename = name.toLowerCase();
   const env = `${name.toUpperCase()}_TABLE_NAME`;
   const client = ts(`src/lambda-fns/${basename}/client.ts`);
+
   // imports dependencies and iniciate the class
   client.open('import {');
   client.line('DynamoDBClient,');
   client.line('PutItemCommand, PutItemCommandInput,');
   client.line('UpdateItemCommand, UpdateItemCommandInput,');
   client.line('GetItemCommand, GetItemCommandInput,');
+  // client.line('BatchGetItemCommand, BatchGetItemCommandInput,');
   client.line('DeleteItemCommand, DeleteItemCommandInput,');
   client.close('} from \'@aws-sdk/client-dynamodb\';');
   client.line('import { marshall } from \'@aws-sdk/util-dynamodb\';');
-  client.line(`import { ${name} } from \'./model\';`);
+  client.line(`import { ${name}, ${name}Key } from \'./model\';`);
   client.line('');
   client.open(`export class ${name}Client {`);
   client.line('readonly client = new DynamoDBClient({ region: process.env.AWS_REGION });');
   client.line('');
+  // // create batch get item function
+  // client.open(`public async batchGetItem(keys: ${name}Key[]) {`);
+  // client.open('const input: BatchGetItemCommandInput = {');
+  // client.open('RequestItems: {');
+  // client.close('},');
+  // client.close('};');
+  // client.close('}');
+  // client.line('');
   // create get item function
-  if (props.sortKey) {
-    client.open(`public async getItem(partitionKey: ${partitionKey.type}, sortKey: ${props.sortKey.type}) {`);
-  } else {
-    client.open(`public async getItem(partitionKey: ${partitionKey.type}) {`);
-  }
-  client.line('let keyObj: { [key: string]: any } = {};');
-  client.line(`keyObj.${partitionKey.key} = partitionKey;`);
-  if (props.sortKey) {
-    client.line(`keyObj.${props.sortKey.key} = sortKey;`);
-  }
+  client.open(`public async getItem(key: ${name}Key) {`);
   client.open('const input: GetItemCommandInput = {');
   client.line(`TableName: process.env.${env},`);
-  client.line('Key: marshall(keyObj),');
+  client.line('Key: marshall(key),');
   client.close('};');
   client.line('return this.client.send(new GetItemCommand(input));');
   client.close('}');
   client.line('');
   // create delete item function
-  if (props.sortKey) {
-    client.open(`public async deleteItem(partitionKey: ${partitionKey.type}, sortKey: ${props.sortKey.type}) {`);
-  } else {
-    client.open(`public async deleteItem(partitionKey: ${partitionKey.type}) {`);
-  }
-  client.line('let keyObj: { [key: string]: any } = {};');
-  client.line(`keyObj.${partitionKey.key} = partitionKey;`);
-  if (props.sortKey) {
-    client.line(`keyObj.${props.sortKey.key} = sortKey;`);
-  }
+  client.open(`public async deleteItem(key: ${name}Key) {`);
   client.open('const input: DeleteItemCommandInput = {');
   client.line(`TableName: process.env.${env},`);
-  client.line('Key: marshall(keyObj),');
+  client.line('Key: marshall(key),');
   client.close('};');
   client.line('return this.client.send(new DeleteItemCommand(input));');
   client.close('}');
+  client.line('');
   // create put item function
   client.open(`public async putItem(item: ${name}) {`);
   client.open('const input: PutItemCommandInput = {');
@@ -230,24 +240,28 @@ function createClient(name: string, partitionKey: EntityType, props: EntityProps
   client.close('}');
   client.line('');
   // create update item function
-  client.open(`public async updateItem(partitionKey: ${partitionKey.type}, item: ${name}) {`);
+  client.open(`public async updateItem(item: ${name}) {`);
   client.line('let expAttrVal: { [key: string]: any } = {};');
   client.line('let upExp = \'set \';');
   client.line('let expAttrNames: { [key: string]: string } = {};');
-  if (props.fields) {
-    for (const field of props.fields) {
+  for (const field of fields) {
+    if (!field.partitionkey && !field.sortKey) {
       client.open(`if (item.${field.key} !== null && item.${field.key} !== undefined) {`);
       client.line(`expAttrVal[\':${field.key}\'] = item.${field.key};`);
       client.line(`upExp = upExp + \'#${field.key} = :${field.key}\,';`);
       client.line(`expAttrNames[\'#${field.key}\'] = \'${field.key}\';`);
-      client.close('};');
+      client.close('}');
     }
   }
   client.line('upExp = upExp.slice(0, -1);');
   client.line('let keyObj: { [key: string]: any } = {};');
-  client.line(`keyObj.${partitionKey.key} = partitionKey;`);
-  if (props.sortKey) {
-    client.line(`keyObj.${props.sortKey.key} = item.${props.sortKey.key};`);
+  for (const field of fields) {
+    if (field.partitionkey) {
+      client.line(`keyObj.${field.key} = item.${field.key};`);
+    }
+    if (field.sortKey) {
+      client.line(`keyObj.${field.key} = item.${field.key};`);
+    }
   }
   client.open('const input: UpdateItemCommandInput = {');
   client.line(`TableName: process.env.${env},`);
@@ -256,39 +270,32 @@ function createClient(name: string, partitionKey: EntityType, props: EntityProps
   client.line('UpdateExpression: upExp,');
   client.line('ExpressionAttributeNames: expAttrNames,');
   client.close('};');
-  client.line('console.log(input);');
   client.line('return this.client.send(new UpdateItemCommand(input));');
   client.close('}');
   client.line('');
   // end class
-  client.close('};');
+  client.close('}');
+  client.line('');
 }
 
-function ts(path: string) : SourceCode {
-  const src = new SourceCode(project, path);
-  src.line(`// ${FileBase.PROJEN_MARKER}`);
-  return src;
-}
-
-function entity(name: string, partitionKey: EntityType, props: EntityProps) {
+function entity(name: string, fields: EntityType[]) {
   // Create Schema
-  createSchema(name, partitionKey, props);
+  createSchema(name, fields);
   // Create Table Construct
-  createTableConstruct(name, partitionKey, props);
+  createTableConstruct(name, fields);
   // Create client
-  createClient(name, partitionKey, props);
+  createClient(name, fields);
 }
 
-entity('User', { key: 'username', type: 'string' }, {
-  sortKey: { key: 'code', type: 'number' },
-  fields: [
-    { key: 'name', type: 'string' },
-    { key: 'age', type: 'number' },
-    { key: 'lastname', type: 'string' },
-    { key: 'phone', type: 'string' },
-    { key: 'address', type: 'string' },
-  ],
-});
+entity('User', [
+  { key: 'username', type: 'string', partitionkey: true },
+  { key: 'loginDate', type: 'string', sortKey: true },
+  { key: 'name', type: 'string' },
+  { key: 'age', type: 'number' },
+  { key: 'lastname', type: 'string' },
+  { key: 'phone', type: 'string' },
+  { key: 'address', type: 'string' },
+]);
 
 // entity('Company', { key: 'code', type: 'string' }, {
 //   fields: [

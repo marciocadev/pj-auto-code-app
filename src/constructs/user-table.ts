@@ -29,8 +29,8 @@ export class UserTable extends Table {
         type: AttributeType.STRING,
       },
       sortKey: {
-        name: 'code',
-        type: AttributeType.NUMBER,
+        name: 'loginDate',
+        type: AttributeType.STRING,
       },
       removalPolicy: RemovalPolicy.DESTROY,
     });
