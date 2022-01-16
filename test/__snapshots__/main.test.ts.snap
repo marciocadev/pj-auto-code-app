@@ -20,7 +20,7 @@ Object {
           "S3Bucket": Object {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "de104f3e313e99087fca8aad1c5964d05ec06a7641c933ef9d6085b7f9f5fde2.zip",
+          "S3Key": "f8dda51199d450a03bf25905d299006c6230956e6c441797d3a72574cc0c811b.zip",
         },
         "Environment": Object {
           "Variables": Object {
@@ -118,7 +118,7 @@ Object {
           "S3Bucket": Object {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "0fa97cc4e336aa1241f07736d927d846f9d84a4883781f7c242437bba82dd112.zip",
+          "S3Key": "98cccf8870c374be3b8a60c2d15be0e8dba1bfaae15122da23e238489a946c7b.zip",
         },
         "Environment": Object {
           "Variables": Object {
@@ -216,7 +216,7 @@ Object {
           "S3Bucket": Object {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "f415d368a9931a8eba266081cea9b38a58c8c17fe4f7c2cd1181aac9b8fa2e6a.zip",
+          "S3Key": "cb383773a45d4fd0b2f99cf2d2cef19c3b4c264baab2cf2407b56e054b9ce72f.zip",
         },
         "Environment": Object {
           "Variables": Object {
@@ -317,7 +317,7 @@ Object {
           "S3Bucket": Object {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "d6544c76900c14621aba8b7e4c460b5b4610feca0e4174cff8fd8f3c9726ef6e.zip",
+          "S3Key": "1f59847d1c6bd5ad03bf5652d47dfa6f0130232af595844708d698a10562d848.zip",
         },
         "Environment": Object {
           "Variables": Object {
@@ -414,8 +414,8 @@ Object {
             "AttributeType": "S",
           },
           Object {
-            "AttributeName": "code",
-            "AttributeType": "N",
+            "AttributeName": "loginDate",
+            "AttributeType": "S",
           },
         ],
         "KeySchema": Array [
@@ -424,7 +424,7 @@ Object {
             "KeyType": "HASH",
           },
           Object {
-            "AttributeName": "code",
+            "AttributeName": "loginDate",
             "KeyType": "RANGE",
           },
         ],

@@ -1,8 +1,8 @@
 import { UserClient } from '../lambda-fns/user/client';
 import { User } from '../lambda-fns/user/model';
 
-export const handler = async(event: { username: string; user: User}) => {
+export const handler = async(event: User) => {
   const client = new UserClient();
-  const result = await client.updateItem(event.username, event.user);
+  const result = await client.updateItem(event);
   return result.Attributes;
 };

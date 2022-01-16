@@ -31,7 +31,7 @@ describe('test update-user lambda', () => {
   test('test update-user lambda success', async() => {
     const user: User = {
       username: 'marciocadev',
-      code: 1,
+      loginDate: '10/07/1973',
       name: 'Marcio',
       age: 48,
       lastname: 'Almeida',
@@ -41,10 +41,7 @@ describe('test update-user lambda', () => {
 
     process.env.USER_TABLE_NAME = 'user-table';
 
-    const result = await handler({
-      username: 'marciocadev',
-      user: user,
-    });
+    const result = await handler(user);
     expect(result).toMatchObject({});
 
     expect(UpdateItemCommand).toBeCalledTimes(1);

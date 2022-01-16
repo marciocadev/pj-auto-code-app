@@ -36,7 +36,7 @@ describe(('validate my stack'), () => {
           KeyType: 'HASH',
         }),
         Match.objectLike({
-          AttributeName: 'code',
+          AttributeName: 'loginDate',
           KeyType: 'RANGE',
         }),
       ],
@@ -51,8 +51,8 @@ describe(('validate my stack'), () => {
           AttributeType: 'S',
         }),
         Match.objectLike({
-          AttributeName: 'code',
-          AttributeType: 'N',
+          AttributeName: 'loginDate',
+          AttributeType: 'S',
         }),
       ],
     });

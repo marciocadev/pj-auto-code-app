@@ -78,5 +78,4 @@ export class UserClient {
     };
     return this.client.send(new UpdateItemCommand(input));
   }
-
 }

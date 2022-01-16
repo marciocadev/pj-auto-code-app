@@ -35,7 +35,7 @@ describe('test get-user lambda', () => {
   test('test get-user lambda success', async() => {
     const event: User = {
       username: 'marciocadev',
-      code: 1,
+      loginDate: '10/07/1973',
     };
 
     process.env.USER_TABLE_NAME = 'user-table';

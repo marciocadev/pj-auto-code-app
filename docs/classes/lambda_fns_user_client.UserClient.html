@@ -137,7 +137,7 @@
 					<a name="deleteItem" class="tsd-anchor"></a>
 					<h3>delete<wbr>Item</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">delete<wbr>Item<span class="tsd-signature-symbol">(</span>partitionKey<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, sortKey<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">DeleteItemCommandOutput</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">delete<wbr>Item<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><a href="../interfaces/lambda_fns_user_model.UserKey.html" class="tsd-signature-type" data-tsd-kind="Interface">UserKey</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">DeleteItemCommandOutput</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -146,10 +146,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>partitionKey: <span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li>
-									<h5>sortKey: <span class="tsd-signature-type">number</span></h5>
+									<h5>key: <a href="../interfaces/lambda_fns_user_model.UserKey.html" class="tsd-signature-type" data-tsd-kind="Interface">UserKey</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">DeleteItemCommandOutput</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -160,7 +157,7 @@
 					<a name="getItem" class="tsd-anchor"></a>
 					<h3>get<wbr>Item</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Item<span class="tsd-signature-symbol">(</span>partitionKey<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, sortKey<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">GetItemCommandOutput</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Item<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><a href="../interfaces/lambda_fns_user_model.UserKey.html" class="tsd-signature-type" data-tsd-kind="Interface">UserKey</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">GetItemCommandOutput</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -169,10 +166,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>partitionKey: <span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li>
-									<h5>sortKey: <span class="tsd-signature-type">number</span></h5>
+									<h5>key: <a href="../interfaces/lambda_fns_user_model.UserKey.html" class="tsd-signature-type" data-tsd-kind="Interface">UserKey</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">GetItemCommandOutput</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -203,7 +197,7 @@
 					<a name="updateItem" class="tsd-anchor"></a>
 					<h3>update<wbr>Item</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">update<wbr>Item<span class="tsd-signature-symbol">(</span>partitionKey<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, item<span class="tsd-signature-symbol">: </span><a href="../interfaces/lambda_fns_user_model.User.html" class="tsd-signature-type" data-tsd-kind="Interface">User</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">UpdateItemCommandOutput</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Item<span class="tsd-signature-symbol">(</span>item<span class="tsd-signature-symbol">: </span><a href="../interfaces/lambda_fns_user_model.User.html" class="tsd-signature-type" data-tsd-kind="Interface">User</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">UpdateItemCommandOutput</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -211,9 +205,6 @@
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
-								<li>
-									<h5>partitionKey: <span class="tsd-signature-type">string</span></h5>
-								</li>
 								<li>
 									<h5>item: <a href="../interfaces/lambda_fns_user_model.User.html" class="tsd-signature-type" data-tsd-kind="Interface">User</a></h5>
 								</li>
