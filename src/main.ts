@@ -72,7 +72,7 @@ const devEnv = {
 
 const app = new App();
 
-const stack = new PjAutoCodeAppStack(app, 'my-stack-dev', { env: devEnv });
+const stack = new PjAutoCodeAppStack(app, 'pj-auto-code-app', { env: devEnv });
 // new MyStack(app, 'my-stack-prod', { env: prodEnv });
 
 Aspects.of(app).add(new AwsSolutionsChecks());

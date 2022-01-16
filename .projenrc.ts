@@ -272,7 +272,6 @@ function createClient(name: string, fields: EntityType[]) {
   client.close('};');
   client.line('return this.client.send(new UpdateItemCommand(input));');
   client.close('}');
-  client.line('');
   // end class
   client.close('}');
   client.line('');
